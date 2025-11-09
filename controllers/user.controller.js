@@ -48,9 +48,18 @@ export const updateUser = async (req, res, next) => {
       throw error;
     }
 
+    // Only allow updates to specific fields
+    const allowedFields = ["name", "email"]; // Add other user-editable fields as needed
+    const filteredBody = {};
+    for (const field of allowedFields) {
+      if (Object.prototype.hasOwnProperty.call(req.body, field)) {
+        filteredBody[field] = req.body[field];
+      }
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body },
+      { $set: filteredBody },
       { new: true, runValidators: true }
     ).select("-password");
 

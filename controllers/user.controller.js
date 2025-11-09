@@ -34,6 +34,11 @@ export const getUser = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
   try {
+    if (req.user.id !== req.params.id) {
+      const error = new Error("Unauthorized!");
+      error.statusCode = 403;
+      throw error;
+    }
     // Prevent password updates through this route
     if (req.body.password) {
       const error = new Error(

@@ -51,7 +51,7 @@ export const updateUser = async (req, res, next) => {
 
     if (!updatedUser) {
       const error = new Error("User doesn't exist");
-      error.statusCode = 401;
+      error.statusCode = 404;
       throw error;
     }
 
